@@ -57,7 +57,10 @@ const programGroups = [
 
 const itineraryMap = Object.fromEntries(
   programGroups.flatMap((group) =>
-    group.items.map((path) => [path.split("/").pop().split(" - ")[0], path])
+    group.items.map((path) => {
+      const code = path.split("/").pop().split(" - ")[0];
+      return [code, { docx: path, pdf: path.replace(/\.docx$/i, ".pdf") }];
+    })
   )
 );
 
@@ -126,19 +129,20 @@ function safeHref(path) {
 }
 
 function labelFromPath(path) {
-  const filename = path.split("/").pop().replace(".docx", "");
+  const filename = path.split("/").pop().replace(/\.(docx|pdf)$/i, "");
   const parts = filename.split(" - ");
   const code = parts[0];
   const title = parts.slice(1).join(" - ");
   return { code, title: title || filename };
 }
 
-function makeActionLinks(path) {
-  const href = safeHref(path);
+function makeActionLinks(asset) {
+  const docxHref = safeHref(asset.docx);
+  const pdfHref = safeHref(asset.pdf);
   return `
     <div class="card-actions">
-      <a class="action-link primary" href="${href}" target="_blank" rel="noreferrer">Open</a>
-      <a class="action-link" href="${href}" download>Download</a>
+      <a class="action-link primary" href="${pdfHref}" target="_blank" rel="noreferrer">View Program</a>
+      <a class="action-link" href="${docxHref}" download>Download DOCX</a>
     </div>
   `;
 }
@@ -195,7 +199,12 @@ function renderRateView(targetId, dataset, type, query = "") {
       }).join("");
       const programCell = type === "excursion"
         ? `<td class="col-program">${itineraryMap[row[0]]
-            ? `<a class="inline-link" href="${safeHref(itineraryMap[row[0]])}" target="_blank" rel="noreferrer">View</a>`
+            ? `
+              <div class="inline-actions">
+                <a class="inline-link" href="${safeHref(itineraryMap[row[0]].pdf)}" target="_blank" rel="noreferrer">View Program</a>
+                <a class="inline-link secondary" href="${safeHref(itineraryMap[row[0]].docx)}" download>Download</a>
+              </div>
+            `
             : `<span class="muted">-</span>`}</td>`
         : "";
       return `<tr>${cells}${programCell}</tr>`;
@@ -266,14 +275,18 @@ function renderPrograms(filterText = "") {
 
     const cards = visibleItems.map((path) => {
       const { code, title } = labelFromPath(path);
+      const asset = {
+        docx: path,
+        pdf: path.replace(/\.docx$/i, ".pdf")
+      };
       return `
         <article class="program-card">
           <div class="file-meta">
-            <span class="pill">DOCX</span>
+            <span class="pill">PDF + DOCX</span>
             <span class="muted">${code}</span>
           </div>
           <h3>${title}</h3>
-          ${makeActionLinks(path)}
+          ${makeActionLinks(asset)}
         </article>
       `;
     }).join("");
