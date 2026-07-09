@@ -96,6 +96,17 @@ function formatValue(value) {
   return text;
 }
 
+function abbreviateMeal(value) {
+  const text = String(value ?? "").trim();
+  if (!text || text === "-") return text || "-";
+  return text
+    .replace(/\b0?(\d+)\s*Lunch\b/gi, "$1L")
+    .replace(/\b0?(\d+)\s*Dinner\b/gi, "$1D")
+    .replace(/\bLunch\b/gi, "L")
+    .replace(/\bDinner\b/gi, "D")
+    .replace(/\s*\+\s*/g, " + ");
+}
+
 function headerClass(header) {
   const normalized = header.toLowerCase();
   if (normalized.includes("code")) return "col-code";
@@ -141,7 +152,7 @@ function makeActionLinks(asset) {
   const pdfHref = safeHref(asset.pdf);
   return `
     <div class="card-actions">
-      <a class="action-link primary" href="${pdfHref}" target="_blank" rel="noreferrer">View Program</a>
+      <a class="action-link primary" href="${pdfHref}" target="_blank" rel="noreferrer">View</a>
       <a class="action-link" href="${docxHref}" download>Download DOCX</a>
     </div>
   `;
@@ -182,15 +193,27 @@ function renderRateView(targetId, dataset, type, query = "") {
   const sections = visibleDataset.sections
     .filter((section) => Array.isArray(section.rows) && section.rows.length > 0)
     .map((section) => {
+    const visibleHeaders = type === "excursion"
+      ? section.headers.filter((header) => header !== "9+ pax")
+      : section.headers;
+    const visibleRows = type === "excursion"
+      ? section.rows.map((row) => row.filter((_, index) => section.headers[index] !== "9+ pax"))
+      : section.rows;
+
     const headers = [
-      ...section.headers,
+      ...visibleHeaders,
       ...(type === "excursion" ? ["Program"] : [])
-    ].map((header) => `<th class="${headerClass(header)}">${header}</th>`).join("");
-    const rows = section.rows.map((row) => {
+    ].map((header, index) => {
+      const baseClass = headerClass(header);
+      return `<th class="${baseClass}">${header}</th>`;
+    }).join("");
+    const rows = visibleRows.map((row) => {
       const cells = row.map((cell, index) => {
-        const header = section.headers[index] || "";
+        const header = visibleHeaders[index] || "";
         const klass = headerClass(header);
-        const display = formatValue(cell);
+        const display = type === "excursion" && header.toLowerCase().includes("meal")
+          ? abbreviateMeal(cell)
+          : formatValue(cell);
         const titleAttr = ` title="${String(display).replace(/"/g, "&quot;")}"`;
         if (index === 0) {
           return `<td class="${klass}"${titleAttr}><strong>${display}</strong></td>`;
@@ -201,7 +224,7 @@ function renderRateView(targetId, dataset, type, query = "") {
         ? `<td class="col-program">${itineraryMap[row[0]]
             ? `
               <div class="inline-actions">
-                <a class="inline-link" href="${safeHref(itineraryMap[row[0]].pdf)}" target="_blank" rel="noreferrer">View Program</a>
+                <a class="inline-link" href="${safeHref(itineraryMap[row[0]].pdf)}" target="_blank" rel="noreferrer">View</a>
                 <a class="inline-link secondary" href="${safeHref(itineraryMap[row[0]].docx)}" download>Download</a>
               </div>
             `
