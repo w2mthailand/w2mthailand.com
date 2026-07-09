@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excursion & Package | W2M Thailand Portal 2027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body data-page="excursion">
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="./index.html" aria-label="W2M Thailand portal home">
+        <img class="brand-logo" src="./logo.svg" alt="W2M logo">
+        <div>
+          <span>W2M Thailand</span>
+          <strong>Contract Rates 2027</strong>
+        </div>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="./index.html">Overview</a>
+        <a class="is-active" href="./excursion-package.html">Excursion &amp; Package</a>
+        <a href="./transfer-service.html">Transfer Service</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div>
+          <p class="eyebrow">Section 01</p>
+          <h1>Excursion &amp; Package</h1>
+          <p class="page-summary">Full rate table with PDF and Excel download.</p>
+        </div>
+        <label class="search-field" for="excursion-search">
+          <span>Search</span>
+          <input id="excursion-search" type="search" placeholder="Code, description, meal">
+        </label>
+        <div class="page-actions">
+          <a class="action-link primary" href="./W2M TH Contract Rate 2027 - Excursion & Package.xlsx" download>Download Contract Rate (Excel)</a>
+          <a class="action-link" href="./W2M TH Contract Rate 2027 - Excursion & Package.pdf" download>Download Contract Rate (PDF)</a>
+          <a class="action-link" href="./W2M TH Tour Programs 2027.zip" download>Download All Programs</a>
+        </div>
+      </section>
+      <section class="content-panel">
+        <div id="excursion-rate-view"></div>
+      </section>
+    </main>
+  </div>
+  <script src="./rate-data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
