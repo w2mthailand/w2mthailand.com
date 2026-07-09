@@ -530,12 +530,14 @@ body[data-page="transfer"] .rate-inline-note strong {
 
 .rate-table.excursion-table th.col-code,
 .rate-table.excursion-table td.col-code {
-  width: 12%;
+  width: 170px;
+  min-width: 170px;
 }
 
 .rate-table.excursion-table th.col-description,
 .rate-table.excursion-table td.col-description {
-  width: 42%;
+  width: 460px;
+  min-width: 460px;
   font-size: 0.82rem;
   white-space: nowrap;
   overflow: hidden;
@@ -545,29 +547,34 @@ body[data-page="transfer"] .rate-inline-note strong {
 
 .rate-table.excursion-table th.col-price,
 .rate-table.excursion-table td.col-price {
-  width: 5.5%;
+  width: 90px;
+  min-width: 90px;
   white-space: nowrap;
   border-right: 1px solid rgba(80, 87, 89, 0.1);
 }
 
 .rate-table.excursion-table th.col-duration,
 .rate-table.excursion-table td.col-duration {
-  width: 7%;
+  width: 110px;
+  min-width: 110px;
   white-space: nowrap;
   border-right: 1px solid rgba(80, 87, 89, 0.12);
 }
 
 .rate-table.excursion-table th.col-meal,
 .rate-table.excursion-table td.col-meal {
-  width: 7%;
+  width: 88px;
+  min-width: 88px;
   white-space: nowrap;
   border-right: 1px solid rgba(80, 87, 89, 0.14);
 }
 
 .rate-table.excursion-table th.col-program,
 .rate-table.excursion-table td.col-program {
-  width: 11%;
+  width: 172px;
+  min-width: 172px;
   white-space: nowrap;
+  text-align: center;
 }
 
 .rate-table.excursion-table td.col-code {
@@ -576,6 +583,13 @@ body[data-page="transfer"] .rate-inline-note strong {
 
 .rate-table.excursion-table th.col-program,
 .rate-table.excursion-table td.col-program {
+  text-align: center;
+}
+
+.rate-table.excursion-table th.col-duration,
+.rate-table.excursion-table td.col-duration,
+.rate-table.excursion-table th.col-meal,
+.rate-table.excursion-table td.col-meal {
   text-align: center;
 }
 
@@ -898,6 +912,16 @@ body[data-page="transfer"] .rate-inline-note strong {
   .page-actions {
     order: 3;
   }
+
+  .rate-table.excursion-table {
+    min-width: 1210px;
+  }
+
+  .rate-table.excursion-table th.col-description,
+  .rate-table.excursion-table td.col-description {
+    width: 420px;
+    min-width: 420px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -922,5 +946,30 @@ body[data-page="transfer"] .rate-inline-note strong {
   .card-grid,
   .program-list {
     grid-template-columns: 1fr;
+  }
+
+  .rate-table-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .rate-table.excursion-table {
+    min-width: 1160px;
+  }
+
+  .rate-table.excursion-table th,
+  .rate-table.excursion-table td {
+    padding: 10px 10px;
+  }
+
+  .rate-table.excursion-table td.col-description {
+    font-size: 0.78rem;
+  }
+
+  .inline-actions .inline-link {
+    min-height: 28px;
+    padding: 0 10px;
+    font-size: 0.68rem;
   }
 }
